@@ -1,0 +1,41 @@
+{
+    "emailConfiguration": 
+    {
+        "emailTo": "xxx@xxx.xxx",
+        "emailOKSubject": "[{1}] - Backup FULL tested with success for {0}!",
+        "emailOKBody": "The FULL backup for the database <b>{0}</b> has been verified and its restore has been evaluated with <b>success</b>.<br />File <i>{1}</i> has been removed from source folder.<br />Elapsed time for restore operation: {2} seconds.<br /><br />Sincerely, your Company.",
+        "emailKOSubject": "[{1}] - ERROR: The Backup FULL for {0} is not healthy.",
+        "emailKOBody": "The restore of the FULL backup for the database <b>{0}</b> has been evaluated with <b>errors</b>.<br />File <i>{1}</i> has been left as is.<br />Error: <pre>{2}</pre><br /><br />Sincerely, your Company.",
+        "emailSmtp": "smtp.server.my",
+        "emailPort": 587,
+        "emailPriority": "High",
+        "emailFrom": "noreply@toany.one",
+        "username": "smtpusername",
+        "password": "smtppassword"
+    },
+    "sqlServerConfiguration":
+    {
+        "sqlServerInstanceName": ".",
+        "sqlRestoreTemplates": [
+            { 
+                "databases": ["DB1","DB2","DB3"],
+                "template": "ALTER DATABASE [{0}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;RESTORE DATABASE [{0}] FROM  DISK = N'{1}' WITH  FILE = 1, MOVE N'{0}' TO N'{2}{0}.mdf', MOVE N'{0}_log' TO N'{2}{0}_Log.ldf', NOUNLOAD,  REPLACE,  STATS = 5;ALTER DATABASE [{0}] SET MULTI_USER;"
+            }
+        ]
+    },
+    "foldersConfiguration":
+    {
+        "servers": 
+        [
+            {"name": "Server01", "folderName": "Instance01"}
+        ],
+        "drive": "C:\\",
+        "defaultRestoreFolderName": "C:\\Databases\\"
+    },
+    "behaviors": 
+    {
+        "sendEmail": false,
+        "onlySendEmailForFailedTasks": true,
+        "databasesToSkip" : ["distribution", "tempdb", "ReportServerTempDb", "model", "master", "msdb", "SSISDB"]
+    }
+}
